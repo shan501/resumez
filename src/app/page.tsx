@@ -32,6 +32,7 @@ export default function Home() {
   });
   const [waitlistSuccess, setWaitlistSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const pricingPlans: PricingPlan[] = [
     {
@@ -77,6 +78,7 @@ export default function Home() {
 
   const sendWaitlistEmail = async () => {
     try {
+      setLoading(true);
       const response = await fetch("/api/waitlist", {
         method: "POST",
         headers: {
@@ -91,8 +93,10 @@ export default function Home() {
       });
       setIsModalOpen(false);
       setWaitlistSuccess(true);
+      setLoading(false);
     } catch (e) {
       setErrorMessage("An error occurred. Please try again later.");
+      setLoading(false);
     }
   };
 
@@ -285,7 +289,9 @@ export default function Home() {
             <Button secondary={true} onClick={closeModal}>
               Cancel
             </Button>
-            <Button onClick={sendWaitlistEmail}>Submit</Button>
+            <Button onClick={sendWaitlistEmail}>
+              {loading ? "Submitting..." : "Submit"}
+            </Button>
           </div>
         </div>
       </Modal>
