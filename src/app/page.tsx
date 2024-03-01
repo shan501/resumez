@@ -289,9 +289,13 @@ export default function Home() {
             <Button secondary={true} onClick={closeModal}>
               Cancel
             </Button>
-            <Button onClick={sendWaitlistEmail}>
-              {loading ? "Submitting..." : "Submit"}
-            </Button>
+            {loading ? (
+              <div>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div>
+              </div>
+            ) : (
+              <Button onClick={sendWaitlistEmail}>Submit</Button>
+            )}
           </div>
         </div>
       </Modal>
