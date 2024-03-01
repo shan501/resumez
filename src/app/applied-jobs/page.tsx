@@ -71,12 +71,6 @@ export default function AppliedJobs() {
           <div className="flex flex-col md:flex-row gap-6 p-6 w-full">
             <div className="md:w-1/3 lg:w-1/4 md:order-2">
               <div className="flex items-center mb-4">
-                <img
-                  alt="Company Logo"
-                  className="mr-4 w-12 h-12" // Adjusted for responsive sizing
-                  src="/placeholder.svg"
-                  style={{ objectFit: "cover" }}
-                />
                 <h2 className="text-2xl font-bold">Acme Inc</h2>
               </div>
               <h3 className="text-xl font-semibold mb-2">Location</h3>
@@ -86,8 +80,8 @@ export default function AppliedJobs() {
               <h3 className="text-xl font-semibold mb-2">About Us</h3>
               <p className="text-gray-600 dark:text-gray-400">
                 Acme Inc is a leading software company that develops many
-                popular internet applications. We're dedicated to making the
-                internet a better place for everyone.
+                popular internet applications. We&apos;re dedicated to making
+                the internet a better place for everyone.
               </p>
             </div>
 
@@ -139,7 +133,7 @@ export default function AppliedJobs() {
               </h3>
               <p className="mb-4 text-gray-600 dark:text-gray-400">
                 To apply, please submit your resume, portfolio, and a brief
-                description of why you're interested in this role.
+                description of why you&apos;re interested in this role.
               </p>
               <button className="w-full py-2 text-white bg-blue-500 hover:bg-blue-700 transition duration-150 ease-in-out">
                 Apply Now

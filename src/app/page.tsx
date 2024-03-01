@@ -1,7 +1,9 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Link from "next/link";
 import Button from "@/components/buttons";
 import "./globals.css";
+import Modal from "@/components/modal";
 
 type PricingPlan = {
   id: number;
@@ -15,7 +17,22 @@ type FeatureItem = {
   description: string;
 };
 
+type ContactForm = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
+
 export default function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [contactForm, setContactForm] = useState<ContactForm>({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+  const [waitlistSuccess, setWaitlistSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const pricingPlans: PricingPlan[] = [
     {
       id: 1,
@@ -39,34 +56,53 @@ export default function Home() {
 
   const features: FeatureItem[] = [
     {
-      title: "All-Day Comfort",
+      title: "Automated Job Applications",
       description:
-        "Experience lasting comfort with carefully designed ergonomics that make our products a joy to use, even during extended wear.",
+        "Using AI, we will send job applications on your behalf to companies you are interested in.",
     },
     {
-      title: "Seamless Connectivity",
+      title: "Job Application Tracking",
       description:
-        "Stay effortlessly connected with reliable and stable connectivity that ensures you're always in touch with your digital world.",
-    },
-    {
-      title: "Immersive Audio",
-      description:
-        "Let the music transport you with rich, immersive audio that brings out the best in every track, podcast, or call.",
-    },
-    {
-      title: "Versatile Style",
-      description:
-        "Express your individuality with products designed to be as unique as you are, blending style with substance for a one-of-a-kind statement.",
+        "Keep track of all the job applications you have sent and their status. ",
     },
   ];
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const sendWaitlistEmail = async () => {
+    try {
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contactForm),
+      });
+      setContactForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+      });
+      setIsModalOpen(false);
+      setWaitlistSuccess(true);
+    } catch (e) {
+      setErrorMessage("An error occurred. Please try again later.");
+    }
+  };
+
   return (
     <div>
-      <div className="sticky top-0 z-50 py-4 px-8 flex justify-between items-center bg-white">
+      <div className="sticky top-0 z-50 py-4 px-8 flex justify-center items-center bg-white sm:justify-between">
         <Link href="#">
           <h1 className="text-3xl font-bold">Resumez</h1>
         </Link>
-        <div className="space-x-4">
+        <div className="space-x-4 hidden sm:flex">
           <Link
             className="text-gray-600 dark:text-gray-400 hover:underline"
             href="#features"
@@ -80,7 +116,9 @@ export default function Home() {
             Pricing
           </Link>
         </div>
-        <Button>Join Waitlist Now</Button>
+        <Button extraClassName={"sm:flex hidden"} onClick={openModal}>
+          Join Waitlist Now
+        </Button>
       </div>
       <div className="flex flex-col bg-white dark:bg-gray-900">
         <div className="lg:mt-44 mt-16 flex flex-col items-center justify-center flex-grow text-center px-4 sm:px-6">
@@ -91,53 +129,48 @@ export default function Home() {
             Create your job profile, tell us your job preferences, and we will
             send job applications on your behalf using AI.
           </p>
-          <form className="w-full max-w-md mt-8">
-            <div className="flex items-center">
-              <input
-                className="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:rounded-r-none dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 focus:outline-none"
-                placeholder="Enter your email"
-                type="email"
-              />
-              <button
-                className="px-4 py-2 bg-black text-white border border-black rounded-r-md dark:bg-blue-500 focus:outline-none"
-                type="submit"
-              >
-                Join Waitlist Now
-              </button>
+          <div className="mt-8 flex justify-center items-center space-y-4">
+            <button
+              className="px-4 py-2 bg-black text-white border border-black rounded-lg dark:bg-blue-500 focus:outline-none"
+              type="submit"
+              onClick={openModal}
+            >
+              Join Waitlist Now
+            </button>
+          </div>
+          {waitlistSuccess && (
+            <div className="mt-4 text-sm text-green-500 dark:text-green-400">
+              Thank you! We will reach out to you soon.
             </div>
-          </form>
+          )}
         </div>
-        <section id="pricing">
-          <div className="mt-24 flex flex-col gap-6 px-4 md:px-6 justify-between items-center">
+        <section id="features">
+          <div className="mt-32 flex flex-col gap-6 px-4 md:px-6 justify-between items-center">
             <div className="space-y-4 text-center">
-              <h2 className="text-3xl font-bold sm:text-5xl">What We Do</h2>
+              <h2 className="text-3xl font-bold sm:text-5xl">What We Offer</h2>
               <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                Resumez take care of the most time consuming part of job
-                hunting, applying to jobs. We use Ai to find the most relevant
-                jobs for you and automatically help you apply to them so you can
-                focus on what is important.
+                Save up to ~20 hours per week by automating your job application
+                process.
               </p>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="container grid gap-6 md:gap-8 px-4 md:px-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                  {features.map((feature, index) => (
-                    <div
-                      key={index}
-                      className="flex gap-4 border border-border-color p-4 rounded-lg"
-                    >
-                      <div className="flex flex-col">
-                        <div className="flex items-center justify-center rounded-lg border border-gray-200 w-16 h-16 dark:border-gray-800 mb-4">
-                          <ActivityIcon className="w-8 h-8" />
-                        </div>
-                        <h3 className="font-semibold">{feature.title}</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {feature.description}
-                        </p>
+              <div className="items-start space-y-12">
+                {features.map((feature, index) => (
+                  <div
+                    key={index}
+                    className="flex gap-4 border border-border-color p-4 rounded-lg"
+                  >
+                    <div className="flex flex-col">
+                      <div className="flex items-center justify-center rounded-lg border border-gray-200 w-16 h-16 dark:border-gray-800 mb-4">
+                        <ActivityIcon className="w-8 h-8" />
                       </div>
+                      <h3 className="font-semibold text-xl">{feature.title}</h3>
+                      <p className="text-lg text-gray-500 dark:text-gray-400">
+                        {feature.description}
+                      </p>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -190,6 +223,72 @@ export default function Home() {
           </div>
         </section>
       </div>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <div>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label htmlFor="first-name" className="block">
+                  First name
+                </label>
+                <input
+                  id="first-name"
+                  placeholder="Enter your first name"
+                  className="block w-full p-2 border border-gray-300 rounded outline-none"
+                  onChange={(e) =>
+                    setContactForm({
+                      ...contactForm,
+                      firstName: e.target.value,
+                    })
+                  }
+                  value={contactForm.firstName}
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="last-name" className="block">
+                  Last name
+                </label>
+                <input
+                  id="last-name"
+                  placeholder="Enter your last name"
+                  className="block w-full p-2 border border-gray-300 rounded outline-none"
+                  onChange={(e) =>
+                    setContactForm({
+                      ...contactForm,
+                      lastName: e.target.value,
+                    })
+                  }
+                  value={contactForm.lastName}
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="email" className="block">
+                Email
+              </label>
+              <input
+                id="email"
+                placeholder="Enter your email"
+                type="email"
+                className="block w-full p-2 border border-gray-300 rounded outline-none"
+                onChange={(e) =>
+                  setContactForm({
+                    ...contactForm,
+                    email: e.target.value,
+                  })
+                }
+                value={contactForm.email}
+              />
+            </div>
+          </div>
+          <div className="flex justify-between mt-8">
+            <Button secondary={true} onClick={closeModal}>
+              Cancel
+            </Button>
+            <Button onClick={sendWaitlistEmail}>Submit</Button>
+          </div>
+        </div>
+      </Modal>
       <footer className="mt-12 flex items-center justify-center py-4 text-gray-600 dark:text-gray-400">
         © 2024 Resumez Inc. All rights reserved.
       </footer>
@@ -197,27 +296,10 @@ export default function Home() {
   );
 }
 
-function SmartphoneIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
-      <path d="M12 18h.01" />
-    </svg>
-  );
-}
+interface IconProps extends React.SVGProps<SVGSVGElement> {}
 
-function CheckIcon(props) {
+// CheckIcon component with typed props
+const CheckIcon: React.FC<IconProps> = (props) => {
   return (
     <svg
       {...props}
@@ -234,9 +316,10 @@ function CheckIcon(props) {
       <polyline points="20 6 9 17 4 12" />
     </svg>
   );
-}
+};
 
-function ActivityIcon(props) {
+// ActivityIcon component with typed props
+const ActivityIcon: React.FC<IconProps> = (props) => {
   return (
     <svg
       {...props}
@@ -253,4 +336,4 @@ function ActivityIcon(props) {
       <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
     </svg>
   );
-}
+};
