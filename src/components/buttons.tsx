@@ -1,38 +1,30 @@
 export default function Button({
   children,
   onClick,
-  secondary = false, // Providing a default value for secondary
+  primaryButton = true,
   extraClassName = "", // Providing a default value for extraClassName
+  size,
 }: {
   children: React.ReactNode;
   onClick: () => void;
   extraClassName?: string;
-  secondary?: boolean;
+  primaryButton: boolean;
+  size?: "small" | "medium" | "large";
 }) {
   return (
-    <>
-      {
-        // Ensuring proper spacing for concatenation and fixing className syntax
-        secondary && (
-          <button
-            className={`${extraClassName} bg-white text-black border border-color-border rounded-lg px-4 py-2`}
-            onClick={onClick}
-          >
-            {children}
-          </button>
-        )
-      }
-      {
-        // Ensuring proper spacing for concatenation and fixing className syntax
-        !secondary && (
-          <button
-            className={`${extraClassName} bg-black text-white rounded-lg px-4 py-2`}
-            onClick={onClick}
-          >
-            {children}
-          </button>
-        )
-      }
-    </>
+    <button
+      className={`${extraClassName} ${
+        primaryButton
+          ? "bg-black text-white"
+          : "bg-white text-black border border-color-border"
+      } rounded-lg 
+      ${size === "small" ? "px-3 py-1" : ""}
+      ${size === "medium" ? "" : ""}
+      ${size === "large" ? "px-4 py-2" : ""} 
+      `}
+      onClick={onClick}
+    >
+      {children}
+    </button>
   );
 }

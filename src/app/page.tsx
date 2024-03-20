@@ -120,7 +120,11 @@ export default function Home() {
             Pricing
           </Link>
         </div>
-        <Button extraClassName={"sm:flex hidden"} onClick={openModal}>
+        <Button
+          extraClassName={"sm:flex hidden"}
+          onClick={openModal}
+          size={"large"}
+        >
           Join Waitlist Now
         </Button>
       </div>
@@ -180,7 +184,7 @@ export default function Home() {
           </div>
         </section>
         <section id="pricing">
-          <div className="px-4 md:px-6 space-y-12 min-h-[704px] flex flex-col items-center justify-center">
+          <div className="sm:mt-0 mt-32 px-4 md:px-6 space-y-12 min-h-[704px] flex flex-col items-center justify-center">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">

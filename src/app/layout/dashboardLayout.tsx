@@ -17,9 +17,8 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="min-h-screen flex">
-      Not Availible
-      {/* <SideMenu />
-      <div className="h-full w-full container mx-auto p-6">{children}</div> */}
+      <SideMenu />
+      <div className="h-full w-full container mx-auto p-6">{children}</div>
     </div>
   );
 }

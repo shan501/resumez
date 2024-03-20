@@ -51,38 +51,38 @@ export default function SideMenu() {
         <ul className="flex flex-col">
           <li className="relative">
             <Link
-              href="/ai-agent"
+              href="/job-search-agents"
               className={`group inline-flex h-9 w-full items-center bg-white px-4 py-2 text-sm font-medium transition-colors ${
-                selectedMenuItem === "/ai-agent"
+                selectedMenuItem === "/job-search-agents"
                   ? "bg-gray-100 text-gray-900"
                   : "hover:bg-gray-100 hover:text-gray-900"
               } dark:bg-gray-950 ${
-                selectedMenuItem === "/ai-agent"
+                selectedMenuItem === "/job-search-agents"
                   ? "dark:bg-gray-800 dark:text-gray-50"
                   : "dark:hover:bg-gray-800 dark:hover:text-gray-50"
               }`}
             >
-              AI Agent
-              {selectedMenuItem === "/ai-agent" && (
+              Job Search Agents
+              {selectedMenuItem === "/job-search-agents" && (
                 <span className="absolute right-0 inset-y-0 w-1 bg-black" />
               )}
             </Link>
           </li>
           <li className="relative">
             <Link
-              href="/applied-jobs"
+              href="/inboxs"
               className={`group inline-flex h-9 w-full items-center bg-white px-4 py-2 text-sm font-medium transition-colors ${
-                selectedMenuItem === "/applied-jobs"
+                selectedMenuItem === "/inboxs"
                   ? "bg-gray-100 text-gray-900"
                   : "hover:bg-gray-100 hover:text-gray-900"
               } dark:bg-gray-950 ${
-                selectedMenuItem === "/applied-jobs"
+                selectedMenuItem === "/inboxs"
                   ? "dark:bg-gray-800 dark:text-gray-50"
                   : "dark:hover:bg-gray-800 dark:hover:text-gray-50"
               }`}
             >
-              Applied Jobs
-              {selectedMenuItem === "/applied-jobs" && (
+              Inboxs
+              {selectedMenuItem === "/inboxs" && (
                 <span className="absolute right-0 inset-y-0 w-1 bg-black" />
               )}
             </Link>
